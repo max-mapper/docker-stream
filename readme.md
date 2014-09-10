@@ -21,3 +21,9 @@ docker-stream <docker container tag or id>
 This will only work with containers that have an [`entrypoint` in their `Dockerfile`](https://docs.docker.com/reference/builder/#entrypoint) set to a program that accepts STDIN and writes to STDOUT/STDERR. Data piped into `docker-stream` will be piped into the docker container's entrypoint and then back out again.
 
 If you run `docker-stream` with a container that isn't downloaded yet docker will automatically download it for you.
+
+## Try it out
+
+```
+echo '{"foo": "bar"}' | docker-stream maxogden/docker-r-transform
+```
