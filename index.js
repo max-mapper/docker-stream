@@ -5,6 +5,7 @@ var os = require('os')
 var spawn = require('win-spawn')
 var kill = require('tree-kill')
 var xtend = require('xtend')
+var debug = require('debug')('docker-stream')
 
 module.exports = DockerStream
 
@@ -77,11 +78,12 @@ DockerStream.prototype.getDockerVersion = function(cb) {
 
 DockerStream.prototype.b2dIP = function(cb) {
   child.exec('boot2docker ip', function(err, stdout, stderr) {
+    debug('b2dIP', err, stdout, stderr)
     if (err) {
       if (err.message.indexOf('is not running') > -1) {
         return cb(new Error(errors.b2dNotRunning))
       }
-      if (err.message.indexOf('not found') > -1) {
+      if (err.message.indexOf('not founfd') > -1) {
         return cb(new Error(errors.b2dMissing))
       }
     }

@@ -1,6 +1,6 @@
 {
   "name": "docker-stream",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "CLI tool for automating the use of docker containers in streaming data processing pipelines. Works on Windows, Mac and Linux.",
   "main": "index.js",
   "bin": {
@@ -9,6 +9,7 @@
   "author": "max ogden",
   "license": "BSD",
   "dependencies": {
+    "debug": "^2.0.0",
     "duplexify": "^3.2.0",
     "minimist": "^1.1.0",
     "through2": "^0.6.1",
