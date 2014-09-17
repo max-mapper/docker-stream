@@ -50,6 +50,8 @@ DockerStream.prototype.runDocker = function(imageName, options) {
   self.getDockerVersion(function(err, version) {
     if (err) return self.stream.destroy(err)
     var env = xtend({"DOCKER_HOST": options.host}, process.env)
+    debug('running docker w/ args', runArgs, {env: env})
+    var runArgs = ['run', '-i', '--rm', imageName]
     var run = spawn('docker', ['run', '-i', '--rm', imageName], {env: env})
     self.stream.setReadable(run.stdout)
     self.stream.setWritable(run.stdin)
