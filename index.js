@@ -94,7 +94,7 @@ DockerStream.prototype.b2dIP = function(cb) {
       }
     }
     var output = stdout.toString()
-    if (output === '') return cb(new Error(errMsg))
+    if (output === '') return cb(new Error(err))
     // todo validate IP?
     cb(null, output)
   })
