@@ -17,7 +17,10 @@ var errors = {
                  "\n\nPlease run the following command in your terminal to start it:" +
                  "\n\nboot2docker start\n",
   dockerMissing: "docker is not currently installed on this machine or is not in your PATH." +
-                 "\n\nPlease visit http://docs.docker.com/installation/ for installation instructions.\n"
+                 "\n\nPlease visit http://docs.docker.com/installation/ for installation instructions.\n",
+  machineMissing: "boot2docker is installed but has not be initialized yet." +
+                "\n\nPlease run the following command in your terminal:" +
+                "\n\nboot2docker init\n"
 }
 
 function DockerStream(imageName, options) {
@@ -80,10 +83,13 @@ DockerStream.prototype.b2dIP = function(cb) {
   child.exec('boot2docker ip', function(err, stdout, stderr) {
     debug('b2dIP', err, stdout, stderr)
     if (err) {
+      if (err.message.indexOf('machine does not exist') > -1) {
+        return cb(new Error(errors.machineMissing))
+      }
       if (err.message.indexOf('is not running') > -1) {
         return cb(new Error(errors.b2dNotRunning))
       }
-      if (err.message.indexOf('not founfd') > -1) {
+      if (err.message.indexOf('not found') > -1) {
         return cb(new Error(errors.b2dMissing))
       }
     }
