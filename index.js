@@ -55,11 +55,12 @@ DockerStream.prototype.runDocker = function(imageName, options) {
     debug('running docker w/ args', runArgs, {env: env})
     var run = spawn('docker', ['run', '-i', '--rm', imageName], {env: env})
     self.stream.stderr.setReadable(run.stderr)
+    self.stream.stderr.setWritable(false)
     self.stream.setReadable(run.stdout)
     self.stream.setWritable(run.stdin)
     run.on('exit', function (code) {
-      self.stream.emit('exit', code);
-    });
+      self.stream.emit('exit', code)
+    })
     run.on('error', function(err) {
       self.stream.destroy(err)
     })
