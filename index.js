@@ -40,6 +40,7 @@ function DockerStream(imageName, options) {
   }
   
   var stream = duplexify()
+  stream.stderr = duplexify()
   stream.dockerStream = this
   this.stream = stream
   return stream
@@ -53,8 +54,12 @@ DockerStream.prototype.runDocker = function(imageName, options) {
     var runArgs = ['run', '-i', '--rm', imageName]
     debug('running docker w/ args', runArgs, {env: env})
     var run = spawn('docker', ['run', '-i', '--rm', imageName], {env: env})
+    self.stream.stderr.setReadable(run.stderr)
     self.stream.setReadable(run.stdout)
     self.stream.setWritable(run.stdin)
+    run.on('exit', function (code) {
+      self.stream.emit('exit', code);
+    });
     run.on('error', function(err) {
       self.stream.destroy(err)
     })
