@@ -50,7 +50,7 @@ DockerStream.prototype.runDocker = function(imageName, options) {
   var self = this
   self.getDockerVersion(function(err, version) {
     if (err) return self.stream.destroy(err)
-    var env = xtend({"DOCKER_HOST": options.host}, process.env)
+    var env = options.host ? xtend({"DOCKER_HOST": options.host}, process.env) : process.env
     var runArgs = ['run', '-i', '--rm', imageName]
     debug('running docker w/ args', runArgs, {env: env})
     var run = spawn('docker', ['run', '-i', '--rm', imageName], {env: env})
